@@ -1,0 +1,1 @@
+Run localhost:8080/spectate for Bonus 1

@@ -1,0 +1,168 @@
+<html>
+<style>button { height: 50px; width: 50px; font-size: 20pt }</style>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+var id = -1;
+var server = io.connect('http://localhost:8080',  { query: "id="+id }, {'reconnect': true});
+var zero = 0;
+var one = 1;
+server.on('wait', n => {
+    document.getElementById('p').innerHTML = 'Waiting!';
+});
+
+server.on('init', n => {
+    document.getElementById('p').innerHTML = 'Waiting!';
+    id = n;
+    server.io.opts.query = 'id='+id
+});
+
+server.on('go', n => {
+    document.getElementById('p').innerHTML = '';
+});
+
+server.on('disconnect', client => {
+});
+
+server.on('GameEnd', msg => {
+    if (msg === 'Winner') {
+        alert('You Win!');
+    } else if (msg === 'Loser') {
+       alert('You Lose!');
+    } else {
+        alert('Game Ended in Draw!');
+    }
+});
+
+server.on('Lock', msg => {
+    alert(msg)
+});
+    
+server.on('board', function(board, t) {
+    for (var i in board) {
+        if (board[i] === 'X' || board[i] === 'O') {
+            document.getElementById('m' + i).innerHTML = board[i];
+        }
+    }
+});
+
+server.on('isvalid', (valid, i) => {
+    if (valid === true) {
+        document.getElementById('m' + i).innerHTML = 'V';
+    }
+});
+
+function move(id) {
+            if (document.getElementById('p').innerHTML === '') {
+            if (document.getElementById('m' + id).innerHTML === 'V') {
+                server.emit('move', id);
+            }
+        }
+}
+
+function validmoves(id) {
+        if (document.getElementById('p').innerHTML === '') {
+            if (document.getElementById('m' + id).innerHTML === '') {
+                server.emit('validmoves', id);
+            }
+        }
+}
+
+function mouseout(id) {
+    if (document.getElementById('m' + id).innerHTML === 'V') {
+        document.getElementById('m' + id).innerHTML = '';
+    }
+}
+
+</script>
+<body>
+<p id ='p'> </p>
+
+    <div style="width:50%; padding-top:10%; margin:0 auto;">
+<table>
+    <tr>
+        <td onmouseover = 'validmoves(0)' onmouseout = 'mouseout(0)'><button id='m0' onclick='move(0)'></button></td>
+        <td onmouseover = 'validmoves(1)' onmouseout = 'mouseout(1)'><button id='m1' onclick='move(1)'></button></td>
+        <td onmouseover = 'validmoves(2)' onmouseout = 'mouseout(2)'><button id='m2' onclick='move(2)'></button></td>
+        <td onmouseover = 'validmoves(3)' onmouseout = 'mouseout(3)'><button id='m3' onclick='move(3)'></button></td>
+        <td onmouseover = 'validmoves(4)' onmouseout = 'mouseout(4)'><button id='m4' onclick='move(4)'></button></td>
+        <td onmouseover = 'validmoves(5)' onmouseout = 'mouseout(5)'><button id='m5' onclick='move(5)'></button></td>
+        <td onmouseover = 'validmoves(6)' onmouseout = 'mouseout(6)'><button id='m6' onclick='move(6)'></button></td>
+        <td onmouseover = 'validmoves(7)' onmouseout = 'mouseout(7)'><button id='m7' onclick='move(7)'></button></td>
+    </tr>
+    <tr>
+        <td onmouseover = 'validmoves(8)' onmouseout = 'mouseout(8)'><button id='m8' onclick='move(8)'></button></td>
+        <td onmouseover = 'validmoves(9)' onmouseout = 'mouseout(9)'><button id='m9' onclick='move(9)'></button></td>
+        <td onmouseover = 'validmoves(10)' onmouseout = 'mouseout(10)'><button id='m10' onclick='move(10)'></button></td>
+        <td onmouseover = 'validmoves(11)' onmouseout = 'mouseout(11)'><button id='m11' onclick='move(11)'></button></td>
+        <td onmouseover = 'validmoves(12)' onmouseout = 'mouseout(12)'><button id='m12' onclick='move(12)'></button></td>
+        <td onmouseover = 'validmoves(13)' onmouseout = 'mouseout(13)'><button id='m13' onclick='move(13)'></button></td>
+        <td onmouseover = 'validmoves(14)' onmouseout = 'mouseout(14)'><button id='m14' onclick='move(14)'></button></td>
+        <td onmouseover = 'validmoves(15)' onmouseout = 'mouseout(15)'><button id='m15' onclick='move(15)'></button></td>
+    </tr>
+    <tr>
+        <td onmouseover = 'validmoves(16)' onmouseout = 'mouseout(16)'><button id='m16' onclick='move(16)'></button></td>
+        <td onmouseover = 'validmoves(17)' onmouseout = 'mouseout(17)'><button id='m17' onclick='move(17)'></button></td>
+        <td onmouseover = 'validmoves(18)' onmouseout = 'mouseout(18)'><button id='m18' onclick='move(18)'></button></td>
+        <td onmouseover = 'validmoves(19)' onmouseout = 'mouseout(19)'><button id='m19' onclick='move(19)'></button></td>
+        <td onmouseover = 'validmoves(20)' onmouseout = 'mouseout(20)'><button id='m20' onclick='move(20)'></button></td>
+        <td onmouseover = 'validmoves(21)' onmouseout = 'mouseout(21)'><button id='m21' onclick='move(21)'></button></td>
+        <td onmouseover = 'validmoves(22)' onmouseout = 'mouseout(22)'><button id='m22' onclick='move(22)'></button></td>
+        <td onmouseover = 'validmoves(23)' onmouseout = 'mouseout(23)'><button id='m23' onclick='move(23)'></button></td>
+    </tr>
+        <tr>
+        <td onmouseover = 'validmoves(24)' onmouseout = 'mouseout(24)'><button id='m24' onclick='move(24)'></button></td>
+        <td onmouseover = 'validmoves(25)' onmouseout = 'mouseout(25)'><button id='m25' onclick='move(25)'></button></td>
+        <td onmouseover = 'validmoves(26)' onmouseout = 'mouseout(26)' ><button id='m26' onclick='move(26)'></button></td>
+        <td onmouseover = 'validmoves(27)' onmouseout = 'mouseout(27)'><button id='m27' onclick='move(27)'>O</button></td>
+        <td onmouseover = 'validmoves(28)' onmouseout = 'mouseout(29)'><button id='m28' onclick='move(28)'>X</button></td>
+        <td onmouseover = 'validmoves(29)' onmouseout = 'mouseout(29)'><button id='m29' onclick='move(29)'></button></td>
+        <td onmouseover = 'validmoves(30)' onmouseout = 'mouseout(30)'><button id='m30' onclick='move(30)'></button></td>
+        <td onmouseover = 'validmoves(31)' onmouseout = 'mouseout(31)'><button id='m31' onclick='move(31)'></button></td>
+    </tr>
+    <tr>
+        <td onmouseover = 'validmoves(32)' onmouseout = 'mouseout(32)'><button id='m32' onclick='move(32)'></button></td>
+        <td onmouseover = 'validmoves(33)' onmouseout = 'mouseout(33)'><button id='m33' onclick='move(33)'></button></td>
+        <td onmouseover = 'validmoves(34)' onmouseout = 'mouseout(34)'><button id='m34' onclick='move(34)'></button></td>
+        <td onmouseover = 'validmoves(35)' onmouseout = 'mouseout(35)'><button id='m35' onclick='move(35)'>X</button></td>
+        <td onmouseover = 'validmoves(36)' onmouseout = 'mouseout(36)'><button id='m36' onclick='move(36)'>O</button></td>
+        <td onmouseover = 'validmoves(37)' onmouseout = 'mouseout(37)'><button id='m37' onclick='move(37)'></button></td>
+        <td onmouseover = 'validmoves(38)' onmouseout = 'mouseout(38)'><button id='m38' onclick='move(38)'></button></td>
+        <td onmouseover = 'validmoves(39)' onmouseout = 'mouseout(39)'><button id='m39' onclick='move(39)'></button></td>
+    </tr>
+    <tr>
+        <td onmouseover = 'validmoves(40)' onmouseout = 'mouseout(40)'><button id='m40' onclick='move(40)'></button></td>
+        <td onmouseover = 'validmoves(41)' onmouseout = 'mouseout(41)'><button id='m41' onclick='move(41)'></button></td>
+        <td onmouseover = 'validmoves(42)' onmouseout = 'mouseout(42)'><button id='m42' onclick='move(42)'></button></td>
+        <td onmouseover = 'validmoves(43)' onmouseout = 'mouseout(43)'><button id='m43' onclick='move(43)'></button></td>
+        <td onmouseover = 'validmoves(44)' onmouseout = 'mouseout(44)'><button id='m44' onclick='move(44)'></button></td>
+        <td onmouseover = 'validmoves(45)' onmouseout = 'mouseout(45)'><button id='m45' onclick='move(45)'></button></td>
+        <td onmouseover = 'validmoves(46)' onmouseout = 'mouseout(46)'><button id='m46' onclick='move(46)'></button></td>
+        <td onmouseover = 'validmoves(47)' onmouseout = 'mouseout(47)'><button id='m47' onclick='move(47)'></button></td>
+    </tr>
+        <tr>
+        <td onmouseover = 'validmoves(48)' onmouseout = 'mouseout(48)'><button id='m48' onclick='move(48)'></button></td>
+        <td onmouseover = 'validmoves(49)' onmouseout = 'mouseout(49)'><button id='m49' onclick='move(49)'></button></td>
+        <td onmouseover = 'validmoves(50)' onmouseout = 'mouseout(50)'><button id='m50' onclick='move(50)'></button></td>
+        <td onmouseover = 'validmoves(51)' onmouseout = 'mouseout(51)'><button id='m51' onclick='move(51)'></button></td>
+        <td onmouseover = 'validmoves(52)' onmouseout = 'mouseout(52)'><button id='m52' onclick='move(52)'></button></td>
+        <td onmouseover = 'validmoves(53)' onmouseout = 'mouseout(53)'><button id='m53' onclick='move(53)'></button></td>
+        <td onmouseover = 'validmoves(54)' onmouseout = 'mouseout(54)'><button id='m54' onclick='move(54)'></button></td>
+        <td onmouseover = 'validmoves(55)' onmouseout = 'mouseout(55)'><button id='m55' onclick='move(55)'></button></td>
+    </tr>
+    <tr>
+        <td onmouseover = 'validmoves(56)' onmouseout = 'mouseout(56)'><button id='m56' onclick='move(56)'></button></td>
+        <td onmouseover = 'validmoves(57)' onmouseout = 'mouseout(57)'><button id='m57' onclick='move(57)'></button></td>
+        <td onmouseover = 'validmoves(58)' onmouseout = 'mouseout(58)'><button id='m58' onclick='move(58)'></button></td>
+        <td onmouseover = 'validmoves(59)' onmouseout = 'mouseout(59)'><button id='m59' onclick='move(59)'></button></td>
+        <td onmouseover = 'validmoves(60)' onmouseout = 'mouseout(60)'><button id='m60' onclick='move(60)'></button></td>
+        <td onmouseover = 'validmoves(61)' onmouseout = 'mouseout(61)'><button id='m61' onclick='move(61)'></button></td>
+        <td onmouseover = 'validmoves(62)' onmouseout = 'mouseout(62)'><button id='m62' onclick='move(62)'></button></td>
+        <td onmouseover = 'validmoves(63)' onmouseout = 'mouseout(63)'><button id='m63' onclick='move(63)'></button></td>
+    </tr>
+</div>
+
+
+</table>
+</body>
+</html>
+
